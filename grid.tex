@@ -1,0 +1,30 @@
+% Based on the answer from TeX Stackexchange:
+% http://tex.stackexchange.com/a/271727/23723
+\documentclass[letterpaper]{article}
+\usepackage{pgf}
+\usepackage{tikz}
+\usepackage[margin=0.2in,tmargin=0.45in,bmargin=0.1in]{geometry}
+\begin{document}
+\pagestyle{empty}
+  \begin{tikzpicture}[remember picture,overlay]
+      \def\width{1.5cm}
+      \pgfmathsetlengthmacro{\offset}{\width}
+      \pgfmathsetlengthmacro{\rows}{floor(\textheight/\offset)-1}
+      \pgfmathsetlengthmacro{\cols}{floor(\textwidth/\width)-1}
+      \pgfmathsetlengthmacro{\dx}{(\textwidth-(1+\cols)*\width)/2}
+      \pgfmathsetlengthmacro{\dy}{(\textheight-(1+\rows)*\offset)/2}
+
+      \coordinate (O) at (0, 0);
+      \definecolor{gred}{rgb}{1, 0.25, 0.22}
+      \foreach \i in {0,1,...,\cols}{
+          \foreach \j in {0,1,...,\rows} {
+              \draw[gred!80,thick,line width=0.3mm]
+                ([xshift=\i*\width,yshift=-\j*\offset]O) rectangle ++(\width,-\width);
+        \draw[gred!40,dashed] ([xshift=\i*\width,yshift=-\width/2-\j*\offset]O) -- ++ (\width,0)
+            ([xshift=\width/2+\i*\width,yshift=-\j*\offset]O) -- ++ (0,-\width)
+            ([xshift=\i*\width, yshift=-\j*\offset]O) -- ++ (\width, -\width)
+            ([xshift=(\i+1)*\width, yshift=-\j*\offset]O) -- ++ (-\width, -\width);
+        }
+    }
+  \end{tikzpicture}
+\end{document}
